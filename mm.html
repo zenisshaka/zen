@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Atack Neon X</title>
+
+<style>
+  body { 
+    font-family: Arial, sans-serif; 
+    background: linear-gradient(135deg, #04040a, #0a0218, #120025);
+    background-size: 300% 300%;
+    animation:bgMove 12s infinite alternate;
+    color: #e6dfe8; 
+    margin:0;
+  }
+
+  @keyframes bgMove {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 100% 50%; }
+  }
+
+  @keyframes neonGlow {
+    0% { box-shadow: 0 0 10px #7b2cff, 0 0 20px #ff2d95; }
+    50% { box-shadow: 0 0 30px #7b2cff, 0 0 60px #ff2d95; }
+    100% { box-shadow: 0 0 10px #7b2cff, 0 0 20px #ff2d95; }
+  }
+
+  @keyframes pulse {
+    0% { box-shadow: 0 0 25px #7b2cff; }
+    50% { box-shadow: 0 0 45px #ff2d95; }
+    100% { box-shadow: 0 0 25px #7b2cff; }
+  }
+
+  .center { 
+    display:flex; justify-content:center; align-items:center; height:100vh; 
+  }
+
+  /* LOGIN */
+  .card-login{
+    width: 320px; 
+    background: rgba(20, 10, 30, 0.95);
+    border-radius: 20px; 
+    padding: 26px;
+    animation: neonGlow 2.5s infinite;
+    border: 2px solid rgba(255,255,255,0.06);
+  }
+
+  h1.title { 
+    text-align: center; margin-bottom: 22px; font-size:26px;
+    color: transparent;
+    background: linear-gradient(90deg, #ff2d95, #7b2cff);
+    -webkit-background-clip: text;
+    animation: neonGlow 3s infinite;
+  }
+
+  .field { display:flex; flex-direction:column; gap:6px; margin-bottom:15px; }
+  label { color:#c8bfd3; margin-left:6px; }
+
+  input[type="text"], input[type="password"], select{
+    background: rgba(0,0,0,0.5);
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 11px 13px;
+    border-radius:12px;
+    font-size:14px;
+    color:#fff;
+    transition:0.2s;
+  }
+
+  input:focus{
+    border-color:#7b2cff;
+    box-shadow:0 0 12px #7b2cff, 0 0 24px #ff2d95;
+  }
+
+  .btn{
+    width:100%; padding:12px 15px; font-size:15px; font-weight:700;
+    border-radius:12px;
+    background: linear-gradient(90deg,#ff2d95,#7b2cff);
+    border:none; cursor:pointer; color:white; margin-top:10px;
+    transition:0.2s;
+  }
+
+  .btn:hover{
+    transform:scale(1.04);
+    box-shadow:0 0 20px #ff2d95, 0 0 40px #7b2cff;
+  }
+
+  /* PANEL CENTER */
+  #panelWrapper { 
+    display:none; padding:30px;
+    display:flex; justify-content:center; align-items:center;
+    min-height:100vh;
+  }
+
+  .card{
+    width: min(360px, 90vw);
+    margin:auto;
+    background: rgba(20, 10, 30, 0.95);
+    padding:22px;
+    border-radius:18px;
+    border:2px solid rgba(255,255,255,0.06);
+    animation: neonGlow 2.5s infinite;
+    transform: scale(0.92);
+  }
+
+  .buttons{ display:flex; gap:12px; }
+
+  .ghost{
+    background:rgba(255,255,255,0.06);
+    color:white;
+    border:1px solid rgba(255,255,255,0.1);
+  }
+
+  .progress{
+    height:12px; background:#222; border-radius:10px;
+    margin-top:10px; overflow:hidden;
+  }
+
+  .bar{
+    height:100%; width:0%;
+    background:linear-gradient(90deg,#ff2d95,#7b2cff);
+    box-shadow:0 0 10px #ff2d95, 0 0 20px #7b2cff;
+    transition:0.3s;
+  }
+
+  .sim-output{
+    margin-top:12px; min-height:70px;
+    padding:10px;
+    background:rgba(255,255,255,0.04);
+    border-radius:10px;
+    font-family:monospace;
+  }
+
+  .log-info { color:#6fb0ff; }
+  .log-success { color:#7fff8a; }
+  .log-warn { color:#ffde59; }
+
+  /* LOADING */
+  #loadingScreen{
+    position:fixed; inset:0; background:#05050c;
+    display:flex; justify-content:center; align-items:center;
+    z-index:999;
+    animation:fadeOut 1s forwards; animation-delay:2.3s;
+  }
+
+  @keyframes fadeOut { to { opacity:0; visibility:hidden; } }
+
+  .loader{
+    width:55px; height:55px; border-radius:50%;
+    border:4px solid #7b2cff; border-top-color:#ff2d95;
+    animation:spin 0.8s infinite linear;
+    box-shadow:0 0 20px #7b2cff;
+  }
+
+  @keyframes spin { to { transform:rotate(360deg); } }
+</style>
+</head>
+
+<body>
+
+<!-- LOADING -->
+<div id="loadingScreen"><div class="loader"></div></div>
+
+<!-- LOGIN -->
+<div id="loginWrapper" class="center">
+  <div class="card-login">
+    <h1 class="title">🔐 Login Neon</h1>
+
+    <form id="loginForm">
+      <div class="field">
+        <label>Username</label>
+        <input id="username" type="text" required>
+      </div>
+
+      <div class="field">
+        <label>Password</label>
+        <input id="password" type="password" required>
+      </div>
+
+      <button class="btn" type="submit">Masuk</button>
+    </form>
+  </div>
+</div>
+
+<!-- PANEL -->
+<div id="panelWrapper">
+  <div class="card" id="panelCard">
+    <h1 class="title">⚡ Attack Neon X</h1>
+
+    <div class="field">
+      <label>Target</label>
+      <div style="display:flex; gap:10px;">
+        <input id="targetInput" type="text" placeholder="628xxxxxxx">
+        <button class="btn ghost" id="randomBtn" style="padding:10px 12px;">🎲</button>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Mode</label>
+      <select id="delaySelect">
+        <option value="force close">force close</option>
+        <option value="spam">Spam</option>
+        <option value="crash">Crash</option>
+        <option value="unlimited">Unlimited otp ⚠</option>
+        <option value="invis delay">invis delay</option>
+        <option value="delay maker">delay maker</option>
+      </select>
+    </div>
+
+    <div class="buttons">
+      <button class="btn" id="sendBtn">Kirim Bug</button>
+      <button class="btn ghost" id="resetBtn">Reset</button>
+    </div>
+
+    <div class="progress"><div class="bar" id="progressBar"></div></div>
+
+    <div id="statusText">Status: Siap.</div>
+    <div class="sim-output" id="simOutput"></div>
+  </div>
+</div>
+
+<script>
+/* LOGIN */
+document.getElementById("loginForm").addEventListener("submit", function(e){
+  e.preventDefault();
+
+  let u = document.getElementById("username").value.trim();
+  let p = document.getElementById("password").value.trim();
+
+  if(u === "zenis ganteng bet" && p === "zenis 02"){
+    document.getElementById("loginWrapper").style.display="none";
+    document.getElementById("panelWrapper").style.display="flex";
+  } else {
+    alert("❌ Username atau Password salah anjengg!");
+  }
+});
+
+/* RANDOM TARGET */
+document.getElementById("randomBtn").onclick = () => {
+  let rand = "628" + Math.floor(Math.random() * 90000000 + 10000000);
+  document.getElementById("targetInput").value = rand;
+};
+
+/* ATTACK SIMULATION */
+const sendBtn = document.getElementById("sendBtn");
+const resetBtn = document.getElementById("resetBtn");
+const progressBar = document.getElementById("progressBar");
+const simOutput = document.getElementById("simOutput");
+const statusText = document.getElementById("statusText");
+const panelCard = document.getElementById("panelCard");
+
+function logSim(t, type="info"){
+  simOutput.innerHTML += `<span class="log-${type}">${t}</span><br>`;
+  simOutput.scrollTop = simOutput.scrollHeight;
+}
+
+sendBtn.onclick = () => {
+  let target = document.getElementById("targetInput").value.trim();
+  let mode = document.getElementById("delaySelect").value;
+
+  if(target === ""){
+    logSim("⚠ Target kosong!", "warn");
+    return;
+  }
+
+  simOutput.innerHTML="";
+  progressBar.style.width="0%";
+  statusText.textContent="Status: Mengirim...";
+  panelCard.style.animation = "pulse 1s infinite";
+
+  let pct = 0;
+
+  let timer = setInterval(()=>{
+    pct += 8;
+
+    if(pct >= 100){
+      pct = 100;
+      clearInterval(timer);
+      statusText.textContent = "Status: Selesai ✔";
+      panelCard.style.animation = "";
+      logSim("✔ Serangan selesai!", "success");
+    }
+
+    progressBar.style.width = pct + "%";
+    logSim(`Mengirim paket | Mode: ${mode}`, "info");
+
+  },120);
+};
+
+resetBtn.onclick = () => {
+  progressBar.style.width="0%";
+  simOutput.innerHTML="";
+  statusText.textContent="Status: Siap.";
+  panelCard.style.animation = "";
+};
+</script>
+
+</body>
+</html>
